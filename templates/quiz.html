@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% macro build(v, label, w) %}
+<label class="chip bt"><input type="radio" name="body" value="{{ v }}" required {{ 'checked' if a.body == v }}>
+  <svg viewBox="0 0 80 110" width="52" height="72" aria-hidden="true"><circle cx="40" cy="14" r="10" fill="currentColor" opacity=".7"/><rect x="{{ 40 - w / 2 }}" y="28" width="{{ w }}" height="50" rx="{{ w / 2.4 }}" fill="currentColor" opacity=".55"/><rect x="{{ 40 - w / 3.2 }}" y="74" width="{{ w / 1.6 }}" height="32" rx="6" fill="currentColor" opacity=".4"/></svg>{{ label }}</label>
+{% endmacro %}
+{% macro choice(type, name, value, label, current) %}
+<label class="chip"><input type="{{ type }}" name="{{ name }}" value="{{ value }}" {{ 'checked' if (current is string and current == value) or (current is not string and value in (current or [])) }}>{{ label }}</label>
+{% endmacro %}
+{% block content %}
+<div class="card narrow">
+  <div class="bar"><i id="qbar" style="width:20%"></i></div>
+  <p class="small" id="qlabel">Step 1 of 5</p>
+  <form method="post" id="quiz" novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <fieldset class="qstep">
+      <h2>About you</h2>
+      <label>Age<input name="age" type="number" min="3" max="99" required value="{{ a.age }}"></label>
+      <label>Gender (optional)<select name="gender">{% for gname in ['', 'Female', 'Male', 'Non-binary', 'Prefer not to say'] %}<option {{ 'selected' if a.gender == gname }}>{{ gname }}</option>{% endfor %}</select></label>
+      <label>Height (cm)<input name="height" type="number" min="80" max="230" required value="{{ a.height }}"></label>
+      <label>Weight (kg)<input name="weight" type="number" min="10" max="250" required value="{{ a.weight }}"></label>
+      <p class="small">We use these only to tailor your plan. Nothing is judged or labelled.</p>
+    </fieldset>
+    <fieldset class="qstep" hidden>
+      <h2>Which build feels closest?</h2>
+      <div class="chips">{{ build('slim','Slim',30) }}{{ build('athletic','Athletic',42) }}{{ build('average','Average',48) }}{{ build('broader','Broader',58) }}{{ build('heavier','Heavier',66) }}</div>
+    </fieldset>
+    <fieldset class="qstep" hidden>
+      <h2>Your level and goal</h2>
+      <p class="label">Current fitness level</p>
+      <div class="chips">{% for v, l in [('beginner','Beginner'),('intermediate','Intermediate'),('active','Active')] %}{{ choice('radio','level',v,l,a.level) }}{% endfor %}</div>
+      <p class="label">Main goal</p>
+      <div class="chips">{% for v, l in [('fat','Lose fat'),('strength','Build muscle and strength'),('stamina','Improve stamina'),('flex','Flexibility'),('focus','Focus and less stress'),('health','General health')] %}{{ choice('radio','goal',v,l,a.goal) }}{% endfor %}</div>
+    </fieldset>
+    <fieldset class="qstep" hidden>
+      <h2>Time and equipment</h2>
+      <p class="label">Time available per day</p>
+      <div class="chips">{% for v, l in [('15','15 min'),('20','20 min'),('30','30 min'),('45','45 min'),('60','60+ min')] %}{{ choice('radio','time',v,l,a.time|string) }}{% endfor %}</div>
+      <p class="label">Equipment (pick any)</p>
+      <div class="chips">{% for v, l in [('none','None'),('bands','Resistance bands'),('mat','Mat'),('gym','Gym'),('outdoor','Outdoor access')] %}{{ choice('checkbox','eq',v,l,a.eq) }}{% endfor %}</div>
+    </fieldset>
+    <fieldset class="qstep" hidden>
+      <h2>Injuries or limitations</h2>
+      <label>Optional: tell us about any (for example a sore knee or back pain)<textarea name="lim" rows="4" maxlength="300">{{ a.lim }}</textarea></label>
+      <p class="small">We swap out exercises that could stress those areas. Please also check with your doctor.</p>
+    </fieldset>
+    <p class="err" id="qerr"></p>
+    <div class="row"><button class="btn g" type="button" id="qback" hidden>Back</button><button class="btn" type="button" id="qnext">Next</button></div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <p class="small">PulseTeen: Igniting Youth Energy</p>
+  <h1>Transforming the Body to Elevate the Mind</h1>
+  <p>A calm, personalised 4-week programme for every age: kids, teens, adults and seniors. Answer a few friendly questions and get a plan that fits your body, your time and your goals.</p>
+  <a class="btn" href="{{ url_for('plan') if g.user else url_for('signup') }}">{{ t('start') }}</a>
+</section>
+<div class="grid">
+  <div class="card"><h3>Focus</h3><p>Movement clears the mind, steadies attention and eases stress.</p></div>
+  <div class="card"><h3>Strength</h3><p>Build steady, safe strength with a progression that respects your pace.</p></div>
+  <div class="card"><h3>Energy</h3><p>Sleep, hydration and routine add up to all-day energy.</p></div>
+</div>
+{% endblock %}

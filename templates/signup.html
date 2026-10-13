@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card narrow">
+  <h2>Create your account</h2>
+  <form method="post" id="signup" novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <label>Name<input name="name" autocomplete="name" required value="{{ request.form.name }}"></label>
+    <label>Email<input name="email" type="email" autocomplete="email" required value="{{ request.form.email }}"></label>
+    <label>Age<input name="age" id="age" type="number" min="3" max="99" required value="{{ request.form.age }}"></label>
+    <div id="guardian" hidden><label class="chip"><input type="checkbox" name="guardian"> I am a parent/guardian, or I have a parent/guardian's permission.</label></div>
+    <label>Password<input name="pw" type="password" autocomplete="new-password" required></label>
+    <span class="small">8+ characters with a letter and a number.</span>
+    <label>Confirm password<input name="pw2" type="password" autocomplete="new-password" required></label>
+    <button class="btn" type="submit">Create account</button>
+  </form>
+  <p class="small">Already registered? <a href="{{ url_for('login') }}">Log in</a></p>
+</div>
+{% endblock %}

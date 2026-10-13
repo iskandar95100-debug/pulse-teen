@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}PulseTeen: Igniting Youth Energy{% endblock %}</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&display=swap">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>
+  <a class="logo" href="{{ url_for('index') }}">PulseTeen</a>
+  <nav>
+    {% for ep, label, k in [('index', t('home'), 'home'), ('plan', t('plan'), 'plan'), ('lifestyle', t('life'), 'life'), ('motivation', t('moti'), 'moti'), ('profile' if g.user else 'login', t('profile') if g.user else t('login'), 'prof')] %}
+    <a href="{{ url_for(ep) }}" class="{{ 'on' if request.endpoint == ep }}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true">{{ ICONS[k]|safe }}</svg><span>{{ label }}</span></a>
+    {% endfor %}
+  </nav>
+</header>
+<main>
+  {% with msgs = get_flashed_messages(with_categories=true) %}
+    {% for cat, m in msgs %}<p class="flash {{ cat }}" role="alert">{{ m }}</p>{% endfor %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="small"><b>Disclaimer:</b> {{ t('disclaimer') }}</footer>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

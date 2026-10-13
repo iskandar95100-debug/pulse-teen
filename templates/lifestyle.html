@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>The 10 Vitality Rules</h2>
+<p class="small">{% if age %}Water and sleep amounts are adjusted for age {{ age }}.{% else %}Log in and complete the questionnaire to adjust water and sleep for your age.{% endif %}</p>
+{% set rules = [
+ ('Balanced plate', 'Fill half your plate with vegetables and fruit, a quarter with protein and a quarter with whole grains.'),
+ ('Hydration', 'Aim for about ' ~ water ~ ' L of water a day, sipping steadily, a little more on active or hot days.'),
+ ('Smart fuel', 'Choose whole foods and a small snack of carbs and protein 60–90 minutes before training.'),
+ ('Sleep', 'Aim for ' ~ sleep ~ ' hours a night. Sleep is when your body recovers and adapts.'),
+ ('Regular sleep routine', 'Go to bed and wake up at similar times, even at weekends.'),
+ ('Digital detox', 'Put screens away one hour before bed so your mind can wind down.'),
+ ('4-7-8 breathing', 'Breathe in for 4, hold for 7, out for 8. Repeat 4 rounds to settle stress.'),
+ ('Active commuting', 'Walk, cycle or take the stairs whenever you can.'),
+ ('Ergonomic posture', 'Screen at eye level, feet flat, shoulders relaxed. Stand and stretch every 45 minutes.'),
+ ('Micro-celebrations', 'Notice every small win: a finished session, an extra glass of water.')] %}
+<div class="grid">{% for h, txt in rules %}<div class="card"><span class="num">{{ loop.index }}</span><h3>{{ h }}</h3><p>{{ txt }}</p></div>{% endfor %}</div>
+{% endblock %}

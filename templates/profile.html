@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Your profile</h2>
+<div class="card">
+  <p><b>{{ g.user['name'] }}</b><br>{{ g.user['email'] }}<br>Age {{ g.user['age'] }}{% if g.user['guardian'] %} · parent/guardian confirmed{% endif %}</p>
+  {% if a %}<p class="small">Current plan: {{ a.goal }} goal, {{ a.level }} level, {{ a.time }} min a day.</p>{% endif %}
+  <a class="btn" href="{{ url_for('plan') if has_plan else url_for('quiz') }}">{{ 'View my plan' if has_plan else 'Start questionnaire' }}</a>
+  <a class="btn g" href="{{ url_for('quiz') }}">Retake questionnaire</a>
+  <form method="post" action="{{ url_for('logout') }}" class="inline">
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <button class="btn g" type="submit">{{ t('logout') }}</button>
+  </form>
+</div>
+{% endblock %}
